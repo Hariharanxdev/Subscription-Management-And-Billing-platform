@@ -1,16 +1,42 @@
-# React + Vite
+# Ledger — Billing Platform Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A React frontend for the Subscription Management & Automated Billing FastAPI backend.
 
-Currently, two official plugins are available:
+## Setup
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+```bash
+npm install
+cp .env.example .env   # adjust VITE_API_BASE_URL if your backend isn't on 127.0.0.1:8000
+npm run dev
+```
 
-## React Compiler
+The app runs on **http://localhost:5173** by default. The backend's CORS config
+only allows `localhost:3000`, `127.0.0.1:3000`, `localhost:5173`, `127.0.0.1:5173` —
+so run the frontend on one of those, and make sure the FastAPI server is running
+(`uvicorn app.main:app --reload`, default port 8000).
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Login note
 
-## Expanding the ESLint configuration
+The backend's `/auth/login` endpoint uses `OAuth2PasswordRequestForm`, so the
+login request is sent as `application/x-www-form-urlencoded`, not JSON — this
+is already handled in `src/services/authService.js`.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Known backend gap
+
+There is no `/auth/me` endpoint, so the frontend only knows the signed-in
+user's **email** and **role** (decoded from the JWT) — no username or user ID
+is available client-side after login. The UI shows the email in the topbar
+accordingly.
+
+## Structure
+
+See `src/` — organized into `components/`, `pages/`, `layouts/`, `context/`,
+`services/` (one file per backend resource), `routes/` (auth guards), `hooks/`,
+and `utils/`.
+
+## Build
+
+```bash
+npm run build
+npm run preview
+```

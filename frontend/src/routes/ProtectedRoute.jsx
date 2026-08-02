@@ -1,18 +1,16 @@
-import { Navigate } from "react-router-dom";
-import useAuth from "../hooks/useAuth";
+import { Navigate, Outlet, useLocation } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
+import { PageLoader } from "../components/ui/Loader";
 
-const ProtectedRoute = ({ children }) => {
+export default function ProtectedRoute() {
+  const { isAuthenticated, initializing } = useAuth();
+  const location = useLocation();
 
-    const {isAuthenticated}=useAuth();
+  if (initializing) return <PageLoader label="Checking your session" />;
 
-    if(!isAuthenticated){
+  if (!isAuthenticated) {
+    return <Navigate to="/login" state={{ from: location }} replace />;
+  }
 
-        return <Navigate to="/login"/>
-
-    }
-
-    return children;
-
+  return <Outlet />;
 }
-
-export default ProtectedRoute;

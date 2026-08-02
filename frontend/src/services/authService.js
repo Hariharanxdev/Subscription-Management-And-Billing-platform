@@ -1,28 +1,21 @@
-import api from "../api/axios";
+import { apiClient } from "./apiClient";
 
-// Register
-export const registerUser = async (userData) => {
-  const response = await api.post("/auth/register", userData);
-  return response.data;
-};
+export const authService = {
+  register({ username, email, password }) {
+    // POST /auth/register — JSON body, returns UserResponse (201)
+    return apiClient.post("/auth/register", { username, email, password });
+  },
 
-// Login
-export const loginUser = async (email, password) => {
-  const formData = new URLSearchParams();
+  login({ email, password }) {
+    // POST /auth/login — the backend uses OAuth2PasswordRequestForm, so this
+    // MUST be sent as application/x-www-form-urlencoded with "username"
+    // holding the email. A JSON body will fail validation.
+    const body = new URLSearchParams();
+    body.append("username", email);
+    body.append("password", password);
 
-  formData.append("username", email);
-  formData.append("password", password);
-
-  const response = await api.post("/auth/login", formData, {
-    headers: {
-      "Content-Type": "application/x-www-form-urlencoded",
-    },
-  });
-
-  return response.data;
-};
-
-// Logout
-export const logoutUser = () => {
-  localStorage.removeItem("access_token");
+    return apiClient.post("/auth/login", body, {
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    });
+  },
 };

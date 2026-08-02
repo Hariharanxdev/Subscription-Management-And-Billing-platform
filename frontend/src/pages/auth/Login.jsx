@@ -1,170 +1,74 @@
-import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import {
-  FaEnvelope,
-  FaLock
-} from "react-icons/fa";
-import {
-  IoEyeOutline,
-  IoEyeOffOutline
-} from "react-icons/io5";
+import { useForm } from "react-hook-form";
+import { Link, useNavigate, useLocation } from "react-router-dom";
+import toast from "react-hot-toast";
+import { useAuth } from "../../context/AuthContext";
+import Input from "../../components/ui/Input";
+import PasswordInput from "../../components/ui/PasswordInput";
+import Button from "../../components/ui/Button";
+import { extractErrorMessage } from "../../utils/format";
 
-import { toast } from "react-hot-toast";
-import { jwtDecode } from "jwt-decode";
-import { loginUser } from "../../services/authService";
-
-const Login = () => {
+export default function Login() {
+  const { login } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
 
-  const [showPassword, setShowPassword] = useState(false);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm();
 
-  const [loading, setLoading] = useState(false);
-
-  const [formData, setFormData] = useState({
-    email: "",
-    password: "",
-  });
-
-  const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
-  };
-
-  const handleLogin = async (e) => {
-    e.preventDefault();
-
-    if (!formData.email || !formData.password) {
-      toast.error("Please fill all fields");
-      return;
-    }
-
+  async function onSubmit(values) {
     try {
-      setLoading(true);
-
-      const data = await loginUser(
-        formData.email,
-        formData.password
-      );
-
-      localStorage.setItem(
-        "access_token",
-        data.access_token
-      );
-
-      const decoded = jwtDecode(data.access_token);
-
-      toast.success("Login Successful");
-
-      if (decoded.role === "admin") {
-        navigate("/admin/dashboard");
-      } else {
-        navigate("/customer/dashboard");
-      }
-
-    } catch (error) {
-
-      toast.error(
-        error.response?.data?.detail || "Login Failed"
-      );
-
-    } finally {
-
-      setLoading(false);
-
+      const user = await login(values.email, values.password);
+      toast.success("Welcome back.");
+      const from = location.state?.from?.pathname;
+      navigate(from || (user?.role === "admin" ? "/admin/dashboard" : "/app/dashboard"), {
+        replace: true,
+      });
+    } catch (err) {
+      toast.error(extractErrorMessage(err));
     }
-  };
+  }
 
   return (
-    <>
-      <h2>Welcome Back </h2>
+    <div>
+      <div className="mb-8">
+        <p className="text-xs font-semibold uppercase tracking-wider text-ledger-500">Welcome back</p>
+        <h2 className="mt-1.5 text-2xl font-display text-ink">Sign in to Ledger</h2>
+        <p className="mt-1.5 text-sm text-ink-faint">Manage your subscription, invoices and payments.</p>
+      </div>
 
-      <p>Login to your NovaBill account</p>
-
-      <form onSubmit={handleLogin}>
-
-        <div className="input-group">
-          <label>Email</label>
-
-          <div className="input-box">
-            <FaEnvelope />
-
-            <input
-              type="email"
-              name="email"
-              placeholder="Enter your email"
-              value={formData.email}
-              onChange={handleChange}
-            />
-          </div>
-        </div>
-
-        <div className="input-group">
-          <label>Password</label>
-
-          <div className="input-box">
-            <FaLock />
-
-            <input
-              type={showPassword ? "text" : "password"}
-              name="password"
-              placeholder="Enter your password"
-              value={formData.password}
-              onChange={handleChange}
-            />
-
-            <span
-              style={{
-                cursor: "pointer",
-                color: "#fff"
-              }}
-              onClick={() =>
-                setShowPassword(!showPassword)
-              }
-            >
-              {showPassword ? (
-                <IoEyeOffOutline />
-              ) : (
-                <IoEyeOutline />
-              )}
-            </span>
-
-          </div>
-        </div>
-
-        <div className="login-options">
-
-          <label>
-            <input type="checkbox" /> Remember Me
-          </label>
-
-          <Link to="#">
-            Forgot Password?
-          </Link>
-
-        </div>
-
-        <button
-          type="submit"
-          className="login-btn"
-        >
-          {loading ? "Signing In..." : "Login"}
-        </button>
-
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4" noValidate>
+        <Input
+          label="Email"
+          type="email"
+          autoComplete="email"
+          placeholder="you@example.com"
+          error={errors.email?.message}
+          {...register("email", {
+            required: "Email is required",
+            pattern: { value: /^\S+@\S+\.\S+$/, message: "Enter a valid email" },
+          })}
+        />
+        <PasswordInput
+          label="Password"
+          autoComplete="current-password"
+          placeholder="••••••••"
+          error={errors.password?.message}
+          {...register("password", { required: "Password is required" })}
+        />
+        <Button type="submit" className="w-full" loading={isSubmitting}>
+          Sign in
+        </Button>
       </form>
 
-      <p className="bottom-text">
-
-        Don't have an account?
-
-        <Link to="/register">
-          Create Account
+      <p className="mt-6 text-center text-sm text-ink-faint">
+        New to Ledger?{" "}
+        <Link to="/register" className="font-medium text-ledger-600 hover:underline">
+          Create an account
         </Link>
-
       </p>
-    </>
+    </div>
   );
-};
-
-export default Login;
+}
