@@ -15,23 +15,36 @@ router = APIRouter(
 )
 
 
+# ============================================================
 # Customer - Make payment
-@router.post("/", response_model=PaymentResponse)
+# ============================================================
+
+@router.post(
+    "/",
+    response_model=PaymentResponse
+)
 def create_payment(
     payment: PaymentCreate,
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user)
 ):
     return PaymentService.create_payment(
-        db,
-        current_user.id,
-        payment.subscription_id,
-        payment.payment_method
+        db=db,
+        user_id=current_user.id,
+        subscription_id=payment.subscription_id,
+        payment_method=payment.payment_method,
+        payment_status=payment.payment_status
     )
 
 
+# ============================================================
 # Admin - View all payments
-@router.get("/", response_model=list[PaymentResponse])
+# ============================================================
+
+@router.get(
+    "/",
+    response_model=list[PaymentResponse]
+)
 def get_all_payments(
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_admin)
@@ -39,8 +52,14 @@ def get_all_payments(
     return PaymentService.get_all_payments(db)
 
 
+# ============================================================
 # Customer/Admin - Get one payment
-@router.get("/{payment_id}", response_model=PaymentResponse)
+# ============================================================
+
+@router.get(
+    "/{payment_id}",
+    response_model=PaymentResponse
+)
 def get_payment(
     payment_id: int,
     db: Session = Depends(get_db),
@@ -53,7 +72,10 @@ def get_payment(
     )
 
 
+# ============================================================
 # View payments for a subscription
+# ============================================================
+
 @router.get(
     "/subscription/{subscription_id}",
     response_model=list[PaymentResponse]

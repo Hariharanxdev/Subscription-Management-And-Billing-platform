@@ -6,6 +6,7 @@ from typing import Optional
 class PaymentCreate(BaseModel):
     subscription_id: int
     payment_method: str
+    payment_status: str = "success"
 
 
 class PaymentResponse(BaseModel):

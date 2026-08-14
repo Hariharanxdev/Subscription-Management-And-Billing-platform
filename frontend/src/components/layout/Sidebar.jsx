@@ -7,6 +7,7 @@ import {
   FiCreditCard,
   FiFileText,
   FiUsers,
+  FiUser,
   FiX,
 } from "react-icons/fi";
 import { useAuth } from "../../context/AuthContext";
@@ -16,6 +17,7 @@ const customerNav = [
   { to: "/app/subscription", label: "Subscription", icon: FiRepeat },
   { to: "/app/payments", label: "Payments", icon: FiCreditCard },
   { to: "/app/invoices", label: "Invoices", icon: FiFileText },
+  { to: "/app/profile", label: "My Profile", icon: FiUser },
 ];
 
 const adminNav = [

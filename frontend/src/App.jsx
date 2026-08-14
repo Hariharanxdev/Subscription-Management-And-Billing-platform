@@ -16,6 +16,7 @@ import CustomerDashboard from "./pages/customer/Dashboard";
 import CustomerSubscription from "./pages/customer/Subscription";
 import CustomerPayments from "./pages/customer/Payments";
 import CustomerInvoices from "./pages/customer/Invoices";
+import CustomerProfile from "./pages/customer/Profile";
 
 import AdminDashboard from "./pages/admin/Dashboard";
 import AdminPlans from "./pages/admin/Plans";
@@ -48,6 +49,7 @@ export default function App() {
             <Route path="/app/subscription" element={<CustomerSubscription />} />
             <Route path="/app/payments" element={<CustomerPayments />} />
             <Route path="/app/invoices" element={<CustomerInvoices />} />
+            <Route path="/app/profile" element={<CustomerProfile />} />
 
             {/* Admin */}
             <Route element={<AdminRoute />}>

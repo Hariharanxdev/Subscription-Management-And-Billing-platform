@@ -9,6 +9,7 @@ const TITLES = {
   "/app/subscription": "Subscription",
   "/app/payments": "Payments",
   "/app/invoices": "Invoices",
+  "/app/profile": "My Profile",
   "/admin/dashboard": "Overview",
   "/admin/plans": "Subscription plans",
   "/admin/subscriptions": "Subscriptions",

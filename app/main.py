@@ -11,6 +11,8 @@ from app.api.invoice import router as invoice_router
 from app.api.dashboard import router as dashboard_router
 from app.api.notification import router as notification_router
 from app.api.admin_user import router as admin_user_router
+from app.api.profile import router as profile_router
+from app.api.email_test import router as email_test_router
 
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -74,6 +76,8 @@ app.include_router(invoice_router)
 app.include_router(dashboard_router)
 app.include_router(notification_router)
 app.include_router(admin_user_router)
+app.include_router(profile_router)
+app.include_router(email_test_router)
 
 
 @app.get("/")

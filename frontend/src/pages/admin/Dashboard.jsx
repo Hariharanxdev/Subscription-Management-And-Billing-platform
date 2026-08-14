@@ -13,6 +13,7 @@ import StatusBadge from "../../components/ui/StatusBadge";
 import ErrorState from "../../components/ui/ErrorState";
 import { SkeletonCard, SkeletonRow } from "../../components/ui/Loader";
 import { formatCurrency, formatDateTime, formatDate } from "../../utils/format";
+import { getSubscriptionPlanName } from "../../utils/dashboardData";
 
 const STATUS_COLORS = { active: "#0E5F5A", expired: "#C1443A", cancelled: "#9CA6A8" };
 
@@ -197,18 +198,15 @@ export default function AdminDashboard() {
               <p className="py-8 text-center text-sm text-ink-faint">No subscriptions yet.</p>
             )}
             {!loading &&
-              recentSubs.map((s) => {
-                const planName = s?.plan?.plan_name ?? s?.plan_name ?? "Unknown plan";
-                return (
-                  <div key={s.id} className="flex items-center justify-between py-3.5 text-sm">
-                    <div>
-                      <p className="text-ink">{planName}</p>
-                      <p className="text-ink-faint tabular">{formatDate(s.start_date)}</p>
-                    </div>
-                    <StatusBadge status={s.status} />
+              recentSubs.map((s) => (
+                <div key={s.id} className="flex items-center justify-between py-3.5 text-sm">
+                  <div>
+                    <p className="text-ink">{getSubscriptionPlanName(s)}</p>
+                    <p className="text-ink-faint tabular">{formatDate(s.start_date)}</p>
                   </div>
-                );
-              })}
+                  <StatusBadge status={s.status} />
+                </div>
+              ))}
           </div>
         </Card>
       </div>
