@@ -213,7 +213,7 @@ Potential background processing workflows include:
 
 This architecture helps keep the application responsive while allowing resource-intensive or scheduled operations to run asynchronously.
 
-## 🚀 How to Run
+## 🚀 How to Setup
 
 ### ⚙️ Backend Setup
 
