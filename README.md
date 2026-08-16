@@ -312,52 +312,10 @@ venv/
 __pycache__/
 node_modules/
 ```
-
-## 📸 Project Preview
-
-### 📊 Customer Dashboard
-
-![Customer Dashboard](./docs/images/customer-dashboard.png)
-
-### 👨‍💼 Admin Dashboard
-
-![Admin Dashboard](./docs/images/admin-dashboard.png)
-
-### 🔐 Login
-
-![Login](./docs/images/login.png)
-
-### 👤 Customer Profile
-
-![Customer Profile](./docs/images/customer-profile.png)
-
-### 📦 Subscription
-
-![Subscription](./docs/images/subscription.png)
-
-### 🧾 Invoice
-
-![Invoice](./docs/images/invoice.png)
-
-### 💳 Payment
-
-![Payment](./docs/images/payment.png)
-
 ## 🎯 Project Goal
 
 BillPro aims to simplify subscription and billing management through a centralized platform where customers and administrators can efficiently manage subscriptions, payments, invoices, profiles, and notifications. The project focuses on providing a secure, organized, and scalable architecture for automated billing workflows.
 
-## 🔮 Future Enhancements
-
-* 💳 Online payment gateway integration
-* 📊 Advanced analytics and reports
-* 🔄 Automated recurring payments
-* 📧 Advanced email notification templates
-* ⚡ Redis-based caching
-* ⏰ Celery-based scheduled billing
-* 🔔 Payment reminders
-* 🔄 Subscription renewal automation
-* ⚙️ Customer notification preferences
 
 ## 👨‍💻 Developer
 
