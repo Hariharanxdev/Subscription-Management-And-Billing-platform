@@ -327,4 +327,4 @@ Passionate about developing scalable web applications and backend services using
 
 ---
 
-⭐ If you find this project useful, consider giving the repository a star!
+⭐ If you find this project useful, consider giving the repository a star!.
